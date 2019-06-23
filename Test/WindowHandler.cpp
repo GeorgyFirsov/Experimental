@@ -18,8 +18,8 @@ CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, Wind
 	}
 
 	m_hWnd = CreateWindow(szAppName, TEXT("App window header"), WS_OVERLAPPEDWINDOW
-                              , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
-                              , nullptr, nullptr, hInstance, nullptr);
+                          , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
+                          , nullptr, nullptr, hInstance, nullptr);
 }
 
 INT CWindowHandler::DisplayWindow(INT iCmdShow) const
@@ -55,7 +55,7 @@ LRESULT CALLBACK CWindowHandler::WndProcDefault(HWND hWnd, UINT uMessage, WPARAM
 		hdc = BeginPaint(hWnd, &paintStruct);
 		GetClientRect(hWnd, &rect);
 		DrawText(hdc, TEXT("Hello Windows"), -1, &rect
-                         , DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+                 , DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 		EndPaint(hWnd, &paintStruct);
 		return 0;
 
