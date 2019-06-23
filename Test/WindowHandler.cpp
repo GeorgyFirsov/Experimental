@@ -3,12 +3,12 @@
 
 CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
 {
-	m_wndClass.style		 = CS_HREDRAW | CS_VREDRAW;
-	m_wndClass.lpfnWndProc	 = WndProc;
-	m_wndClass.cbClsExtra	 = 0;
-	m_wndClass.cbWndExtra	 = 0;
-	m_wndClass.hInstance	 = hInstance;
-	m_wndClass.hIcon		 = LoadIcon(nullptr, IDI_APPLICATION);
+	m_wndClass.style         = CS_HREDRAW | CS_VREDRAW;
+	m_wndClass.lpfnWndProc   = WndProc;
+	m_wndClass.cbClsExtra    = 0;
+	m_wndClass.cbWndExtra    = 0;
+	m_wndClass.hInstance     = hInstance;
+	m_wndClass.hIcon         = LoadIcon(nullptr, IDI_APPLICATION);
 	m_wndClass.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
 	m_wndClass.lpszMenuName  = nullptr;
 	m_wndClass.lpszClassName = szAppName;
@@ -18,8 +18,8 @@ CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, Wind
 	}
 
 	m_hWnd = CreateWindow(szAppName, TEXT("App window header"), WS_OVERLAPPEDWINDOW
-						  , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
-						  , nullptr, nullptr, hInstance, nullptr);
+                              , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
+                              , nullptr, nullptr, hInstance, nullptr);
 }
 
 INT CWindowHandler::DisplayWindow(INT iCmdShow) const
@@ -55,7 +55,7 @@ LRESULT CALLBACK CWindowHandler::WndProcDefault(HWND hWnd, UINT uMessage, WPARAM
 		hdc = BeginPaint(hWnd, &paintStruct);
 		GetClientRect(hWnd, &rect);
 		DrawText(hdc, TEXT("Hello Windows"), -1, &rect
-				 , DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+                         , DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 		EndPaint(hWnd, &paintStruct);
 		return 0;
 
