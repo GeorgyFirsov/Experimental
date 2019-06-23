@@ -35,7 +35,7 @@ namespace window_handler_auxilary
 			return DefWindowProc(hWnd, uMessage, wParam, lParam);
 		}
 	}
-}
+} // window_handler_auxilary
 
 CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
 {
@@ -47,15 +47,7 @@ CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, Wind
 		WndProc = window_handler_auxilary::WndProcDefault;
 	}
 
-	m_wndClass.style         = CS_HREDRAW | CS_VREDRAW;
-	m_wndClass.lpfnWndProc   = WndProc;
-	m_wndClass.cbClsExtra    = 0;
-	m_wndClass.cbWndExtra    = 0;
-	m_wndClass.hInstance     = hInstance;
-	m_wndClass.hIcon         = LoadIcon(nullptr, IDI_APPLICATION);
-	m_wndClass.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
-	m_wndClass.lpszMenuName  = nullptr;
-	m_wndClass.lpszClassName = szAppName;
+	InitializeWndClass(hInstance, szAppName, WndProc);
 
 	if (!RegisterClass(&m_wndClass)) {
 		throw std::runtime_error("Can not initialize Window Class");
@@ -79,4 +71,19 @@ INT CWindowHandler::DisplayWindow(INT iCmdShow) const
 	}
 
 	return static_cast<INT>(msg.wParam);
+}
+
+void CWindowHandler::InitializeWndClass(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
+{
+	assert(WndProc != nullptr);
+
+	m_wndClass.style         = CS_HREDRAW | CS_VREDRAW;
+	m_wndClass.lpfnWndProc   = WndProc;
+	m_wndClass.cbClsExtra    = 0;
+	m_wndClass.cbWndExtra    = 0;
+	m_wndClass.hInstance     = hInstance;
+	m_wndClass.hIcon         = LoadIcon(nullptr, IDI_APPLICATION);
+	m_wndClass.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
+	m_wndClass.lpszMenuName  = nullptr;
+	m_wndClass.lpszClassName = szAppName;
 }

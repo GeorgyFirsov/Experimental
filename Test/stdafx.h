@@ -7,4 +7,6 @@
 
 //************ Other includes ***********/
 #include <stdexcept>
+#include <cassert>
+
 #include <string>
