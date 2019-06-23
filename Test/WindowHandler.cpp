@@ -39,6 +39,10 @@ namespace window_handler_auxilary
 
 CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
 {
+	if(!hInstance) {
+		throw std::runtime_error("Invalid hInstance");
+	}
+
 	if(!WndProc) {
 		WndProc = window_handler_auxilary::WndProcDefault;
 	}
