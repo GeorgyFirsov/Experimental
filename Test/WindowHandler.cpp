@@ -1,8 +1,48 @@
 #include "stdafx.h"
 #include "WindowHandler.h"
 
+namespace window_handler_auxilary
+{
+	LRESULT CALLBACK WndProcDefault(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
+	{
+		HDC hdc;
+
+		switch (uMessage)
+		{
+		case WM_CREATE:
+
+			PlaySound(TEXT("hellowin.wav"), nullptr, SND_FILENAME | SND_ASYNC);
+			return 0;
+
+		case WM_PAINT:
+
+			PAINTSTRUCT paintStruct;
+			RECT rect;
+			hdc = BeginPaint(hWnd, &paintStruct);
+			GetClientRect(hWnd, &rect);
+			DrawText(hdc, TEXT("Hello Windows"), -1, &rect
+				, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+			EndPaint(hWnd, &paintStruct);
+			return 0;
+
+		case WM_DESTROY:
+
+			PostQuitMessage(0);
+			return 0;
+
+		default:
+
+			return DefWindowProc(hWnd, uMessage, wParam, lParam);
+		}
+	}
+}
+
 CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
 {
+	if(!WndProc) {
+		WndProc = window_handler_auxilary::WndProcDefault;
+	}
+
 	m_wndClass.style         = CS_HREDRAW | CS_VREDRAW;
 	m_wndClass.lpfnWndProc   = WndProc;
 	m_wndClass.cbClsExtra    = 0;
@@ -35,37 +75,4 @@ INT CWindowHandler::DisplayWindow(INT iCmdShow) const
 	}
 
 	return static_cast<INT>(msg.wParam);
-}
-
-LRESULT CALLBACK CWindowHandler::WndProcDefault(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
-{
-	HDC hdc;
-
-	switch (uMessage)
-	{
-	case WM_CREATE:
-
-		PlaySound(TEXT("hellowin.wav"), nullptr, SND_FILENAME | SND_ASYNC);
-		return 0;
-
-	case WM_PAINT:
-
-		PAINTSTRUCT paintStruct;
-		RECT rect;
-		hdc = BeginPaint(hWnd, &paintStruct);
-		GetClientRect(hWnd, &rect);
-		DrawText(hdc, TEXT("Hello Windows"), -1, &rect
-                 , DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-		EndPaint(hWnd, &paintStruct);
-		return 0;
-
-	case WM_DESTROY:
-
-		PostQuitMessage(0);
-		return 0;
-
-	default:
-
-		return DefWindowProc(hWnd, uMessage, wParam, lParam);
-	}
 }

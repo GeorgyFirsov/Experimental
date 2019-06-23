@@ -6,7 +6,9 @@ class CWindowHandler
 
 public:
 
-	CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc = WndProcDefault);
+	CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc = nullptr);
+
+	~CWindowHandler() = default;
 
 	INT DisplayWindow(INT iCmdShow) const;
 
@@ -14,6 +16,4 @@ private:
 	
 	WNDCLASS m_wndClass;
 	HWND	 m_hWnd;
-
-	static LRESULT CALLBACK WndProcDefault(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 };
