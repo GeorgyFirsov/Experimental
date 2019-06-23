@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "WindowCreator.h"
+#include "WindowHandler.h"
 
 CWindowHandler::CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
 {
