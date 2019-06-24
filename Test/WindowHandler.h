@@ -9,7 +9,7 @@ class CWindowHandler
 {
 public:
 
-	CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, window_handler_auxilary::WindowProc WndProc = nullptr);
+	CWindowHandler(const HINSTANCE hInstance, const TCHAR* szAppName, window_handler_auxilary::WindowProc WndProc = nullptr);
 
 	~CWindowHandler() = default;
 
