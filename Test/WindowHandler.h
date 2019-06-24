@@ -1,15 +1,19 @@
 #pragma once
 
-class CWindowHandler
+namespace window_handler_auxilary
 {
 	using WindowProc = LRESULT(HWND, UINT, WPARAM, LPARAM);
+}
 
+class CWindowHandler
+{
 public:
 
-	CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc = nullptr);
+	CWindowHandler(HINSTANCE hInstance, const TCHAR* szAppName, window_handler_auxilary::WindowProc WndProc = nullptr);
 
 	~CWindowHandler() = default;
 
+	/* CWindowHandler should be neither copyable nor movable */
 	CWindowHandler(const CWindowHandler&) = delete;
 	CWindowHandler(CWindowHandler&&) = delete;
 
@@ -22,6 +26,4 @@ private:
 	
 	WNDCLASS m_wndClass;
 	HWND	 m_hWnd;
-
-	void InitializeWndClass(HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc);
 };
