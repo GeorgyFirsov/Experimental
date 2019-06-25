@@ -1,78 +1,26 @@
 #include "stdafx.h"
 #include "WindowHandler.h"
 
-namespace window_handler_auxilary
+CWindowHandler::CWindowHandler()
 {
-	LRESULT CALLBACK WndProcDefault(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
-	{
-		HDC hdc;
+	auto hInstance		= GetModuleHandle(nullptr);
+	auto szWndClassName = L"ApplicationDefault";
+	auto WndProc		= window_auxilary::DefaultWndProc;
 
-		switch (uMessage)
-		{
-		case WM_CREATE:
+	CreateMainWindow(hInstance, szWndClassName, WndProc);
+}
 
-			PlaySound(TEXT("hellowin.wav"), nullptr, SND_FILENAME | SND_ASYNC);
-			return 0;
-
-		case WM_PAINT:
-
-			PAINTSTRUCT paintStruct;
-			RECT rect;
-			hdc = BeginPaint(hWnd, &paintStruct);
-			GetClientRect(hWnd, &rect);
-			DrawText(hdc, TEXT("Hello Windows"), -1, &rect
-				, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-			EndPaint(hWnd, &paintStruct);
-			return 0;
-
-		case WM_DESTROY:
-
-			PostQuitMessage(0);
-			return 0;
-
-		default:
-
-			return DefWindowProc(hWnd, uMessage, wParam, lParam);
-		}
-	}
-
-	void InitializeWndClass(PWNDCLASS pWndClass, const HINSTANCE hInstance, const TCHAR* szAppName, WindowProc WndProc)
-	{
-		assert(pWndClass != nullptr);
-		assert(WndProc != nullptr);
-
-		pWndClass->style = CS_HREDRAW | CS_VREDRAW;
-		pWndClass->lpfnWndProc = WndProc;
-		pWndClass->cbClsExtra = 0;
-		pWndClass->cbWndExtra = 0;
-		pWndClass->hInstance = hInstance;
-		pWndClass->hIcon = LoadIcon(nullptr, IDI_APPLICATION);
-		pWndClass->hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
-		pWndClass->lpszMenuName = nullptr;
-		pWndClass->lpszClassName = szAppName;
-	}
-
-} // window_handler_auxilary
-
-CWindowHandler::CWindowHandler(const HINSTANCE hInstance, const TCHAR* szAppName, window_handler_auxilary::WindowProc WndProc)
+CWindowHandler::CWindowHandler(HINSTANCE hInstance, const std::wstring& sWndClassName, WindowProc WndProc)
 {
-	if(!hInstance) {
+	if (!hInstance) {
 		throw std::runtime_error("Invalid hInstance");
 	}
 
-	if(!WndProc) {
-		WndProc = window_handler_auxilary::WndProcDefault;
+	if (!WndProc) {
+		WndProc = window_auxilary::DefaultWndProc;
 	}
 
-	window_handler_auxilary::InitializeWndClass(&m_wndClass, hInstance, szAppName, WndProc);
-
-	if (!RegisterClass(&m_wndClass)) {
-		throw std::runtime_error("Can not initialize Window Class");
-	}
-
-	m_hWnd = CreateWindow(szAppName, TEXT("App window header"), WS_OVERLAPPEDWINDOW
-                          , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
-                          , nullptr, nullptr, hInstance, nullptr);
+	CreateMainWindow(hInstance, sWndClassName.c_str(), WndProc);
 }
 
 INT CWindowHandler::DisplayWindow(INT iCmdShow) const
@@ -83,9 +31,46 @@ INT CWindowHandler::DisplayWindow(INT iCmdShow) const
 	MSG msg;
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
-		TranslateMessage(&msg);
+ 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
 	return static_cast<INT>(msg.wParam);
+}
+
+VOID CWindowHandler::CreateMainWindow(HINSTANCE hInstance, const wchar_t* szWndClassName, WindowProc WndProc)
+{
+	assert(szWndClassName);
+	assert(WndProc);
+
+	InitializeWndClass(&m_wndClass, hInstance, szWndClassName, WndProc);
+	RegisterClass(&m_wndClass);
+
+	m_hWnd = CreateWindow(szWndClassName, L"App window header", WS_OVERLAPPEDWINDOW
+						  , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
+						  , nullptr, nullptr, hInstance, nullptr);
+}
+
+VOID InitializeWndClass(PWNDCLASS pWndClass, HINSTANCE hInstance, const wchar_t* szAppName, window_auxilary::WindowProc WndProc)
+{
+	if (!pWndClass) {
+		throw std::runtime_error(std::string(__FUNCTION__) + ": window class pointer is null");
+	}
+
+	if (!WndProc) {
+		WndProc = window_auxilary::DefaultWndProc;
+	}
+
+	pWndClass->style		 = CS_HREDRAW | CS_VREDRAW;
+	pWndClass->lpfnWndProc	 = WndProc;
+	pWndClass->cbClsExtra	 = 0;
+	pWndClass->cbWndExtra	 = 0;
+	pWndClass->hInstance	 = hInstance;
+	pWndClass->hCursor		 = LoadCursor(nullptr, IDC_ARROW);
+	pWndClass->hIcon		 = LoadIcon(nullptr, IDI_APPLICATION);
+	pWndClass->hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
+	pWndClass->lpszMenuName	 = nullptr;
+
+	if (!szAppName) pWndClass->lpszClassName = L"ApplicationDefault";
+	else			pWndClass->lpszClassName = szAppName;
 }
