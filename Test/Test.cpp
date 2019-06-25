@@ -25,8 +25,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 	static LONG	lWndWidth = 0;
 	static LONG	lWndHeight = 0;
 
-	static auto lUnits = GetDialogBaseUnits();
-	static auto lButtonWidth = MulDiv(LOWORD(lUnits), 50, 4);
+	static auto lUnits		  = GetDialogBaseUnits();
+	static auto lButtonWidth  = MulDiv(LOWORD(lUnits), 50, 4);
 	static auto lButtonHeight = MulDiv(HIWORD(lUnits), 14, 8);
 
 	auto		 iKeyPressed = 0;
