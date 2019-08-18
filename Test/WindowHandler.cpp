@@ -3,9 +3,9 @@
 
 CWindowHandler::CWindowHandler()
 {
-	auto hInstance		= GetModuleHandle(nullptr);
+	auto hInstance	    = GetModuleHandle(nullptr);
 	auto szWndClassName = L"ApplicationDefault";
-	auto WndProc		= window_auxilary::DefaultWndProc;
+	auto WndProc	    = window_auxilary::DefaultWndProc;
 
 	CreateMainWindow(hInstance, szWndClassName, WndProc);
 }
@@ -47,8 +47,8 @@ VOID CWindowHandler::CreateMainWindow(HINSTANCE hInstance, const wchar_t* szWndC
 	RegisterClass(&m_wndClass);
 
 	m_hWnd = CreateWindow(szWndClassName, L"App window header", WS_OVERLAPPEDWINDOW
-						  , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
-						  , nullptr, nullptr, hInstance, nullptr);
+                              , CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT
+                              , nullptr, nullptr, hInstance, nullptr);
 }
 
 VOID InitializeWndClass(PWNDCLASS pWndClass, HINSTANCE hInstance, const wchar_t* szAppName, window_auxilary::WindowProc WndProc)
@@ -61,16 +61,16 @@ VOID InitializeWndClass(PWNDCLASS pWndClass, HINSTANCE hInstance, const wchar_t*
 		WndProc = window_auxilary::DefaultWndProc;
 	}
 
-	pWndClass->style		 = CS_HREDRAW | CS_VREDRAW;
+	pWndClass->style	 = CS_HREDRAW | CS_VREDRAW;
 	pWndClass->lpfnWndProc	 = WndProc;
 	pWndClass->cbClsExtra	 = 0;
 	pWndClass->cbWndExtra	 = 0;
 	pWndClass->hInstance	 = hInstance;
-	pWndClass->hCursor		 = LoadCursor(nullptr, IDC_ARROW);
-	pWndClass->hIcon		 = LoadIcon(nullptr, IDI_APPLICATION);
+	pWndClass->hCursor	 = LoadCursor(nullptr, IDC_ARROW);
+	pWndClass->hIcon	 = LoadIcon(nullptr, IDI_APPLICATION);
 	pWndClass->hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
 	pWndClass->lpszMenuName	 = nullptr;
 
 	if (!szAppName) pWndClass->lpszClassName = L"ApplicationDefault";
-	else			pWndClass->lpszClassName = szAppName;
+	else		pWndClass->lpszClassName = szAppName;
 }
