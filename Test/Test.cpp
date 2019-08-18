@@ -8,7 +8,7 @@ VOID    CALLBACK DrawTextOnWindow(HDC* pHdc, RECT* pRect, PAINTSTRUCT* pPs, HWND
 VOID    CALLBACK RedrawTextOnWindow(HDC* pHdc, RECT* pRect, PAINTSTRUCT* pPs, HWND* pHwnd, const std::wstring& sText);
 
 INT APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
-					  , _In_ LPWSTR lpCmdLine, _In_ INT iShowCmd)
+                      , _In_ LPWSTR lpCmdLine, _In_ INT iShowCmd)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -22,17 +22,17 @@ INT APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
 	static HWND hButton;
-	static LONG	lWndWidth = 0;
-	static LONG	lWndHeight = 0;
+	static LONG lWndWidth = 0;
+	static LONG lWndHeight = 0;
 
-	static auto lUnits		  = GetDialogBaseUnits();
+	static auto lUnits	  = GetDialogBaseUnits();
 	static auto lButtonWidth  = MulDiv(LOWORD(lUnits), 50, 4);
 	static auto lButtonHeight = MulDiv(HIWORD(lUnits), 14, 8);
 
-	auto		 iKeyPressed = 0;
-	/*HDC			 hdc;
+	auto         iKeyPressed = 0;
+	/*HDC	     hdc;
 	PAINTSTRUCT  paintStruct;*/
-	RECT		 rect;
+	RECT	     rect;
 	std::wstring sText;
 
 	GetClientRect(hWnd, &rect);
@@ -57,8 +57,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 
 		DestroyWindow(hButton);
 		hButton = CreateWindow(L"BUTTON", L"Press me!", WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON
-							   , (lWndWidth - lButtonWidth) / 2, (lWndHeight - lButtonHeight) / 2, lButtonWidth, lButtonHeight
-							   , hWnd, nullptr, GetModuleHandle(nullptr), nullptr);
+                                       , (lWndWidth - lButtonWidth) / 2, (lWndHeight - lButtonHeight) / 2, lButtonWidth, lButtonHeight
+                                       , hWnd, nullptr, GetModuleHandle(nullptr), nullptr);
 		return 0;
 
 	case WM_COMMAND: // button clicked
